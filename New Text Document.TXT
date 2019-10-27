@@ -1,0 +1,47 @@
+import React, { Component } from 'react';
+
+import ProgramItem from './ProgramItem';
+import axios from 'axios';
+import _ from 'lodash';
+
+class ProgramBody extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			loading: true,
+			programs: {},
+		};
+	}
+
+	componentDidMount() {
+		axios.get('/api/program').then((response) => {
+			console.log(response);
+			this.setState({
+				loading: false,
+				programs: response.data,
+			});
+		});
+	}
+
+	render() {
+		if (this.state.loading === true) {
+			return <div>loading</div>;
+		}
+
+		return  _.map(this.state.programs, (program) => {
+			return <ProgramItem key={program.id} program={program}></ProgramItem>;
+		});
+	}
+}
+else {
+	return (
+		<div style={userStyle}>
+			{this.props.users.map((user) => {
+				return <UserItem id={user.id} user={user}></UserItem>;
+			})}
+			;
+		</div>
+	);
+}
+
+export default ProgramBody;
